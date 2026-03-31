@@ -1,0 +1,9 @@
+input/
+output/
+__pycache__/
+*.pyc
+*.mp4
+*.avi
+*.mov
+*.mkv
+venv/

@@ -40,7 +40,7 @@ VIDEO_PATH   = input("Enter video filename (e.g. two_people_shirt.mp4): ")
 VIDEO_PATH   = f"input/{VIDEO_PATH}"
 TARGET_COLOR = input(f"Enter colour to search {list(COLOR_RANGES.keys())}: ").strip().lower()
 FRAME_SKIP   = 10
-MIN_PIXELS   = 12000
+MIN_PIXELS   = 500
 OUTPUT_DIR   = f"output/{TARGET_COLOR}_frames"
 # ────────────────────────────────────────────────────
 
@@ -83,8 +83,7 @@ while cap.isOpened():
         mask[:int(height * 0.40), :] = 0
 
         # Merge nearby regions into one big area
-        kernel = np.ones((60, 60), np.uint8)
-        mask   = cv2.dilate(mask, kernel, iterations=3)
+        kernel = np.ones((5, 5), np.uint8)
         mask   = cv2.erode(mask, kernel, iterations=1)
 
         if cv2.countNonZero(mask) >= MIN_PIXELS:
@@ -94,7 +93,7 @@ while cap.isOpened():
                 largest = max(contours, key=cv2.contourArea)
                 area    = cv2.contourArea(largest)
 
-                if area > 5000:
+                if area > 500:
                     frame_with_box = frame.copy()
                     x, y, w, h     = cv2.boundingRect(largest)
                     box_color      = BOX_COLORS.get(TARGET_COLOR, (0, 255, 0))

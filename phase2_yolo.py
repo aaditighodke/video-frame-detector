@@ -101,7 +101,7 @@ while cap.isOpened():
                 total_pixels  = clothing_crop.shape[0] * clothing_crop.shape[1]
 
                 # Step 5 — If more than 10% of clothing area matches colour → save
-                if total_pixels > 0 and (colour_pixels / total_pixels) > 0.20:
+                if total_pixels > 0 and (colour_pixels / total_pixels) > 0.30:
                     box_color = BOX_COLORS.get(TARGET_COLOR, (0, 255, 0))
                     cv2.rectangle(frame_with_boxes, (x1, y1), (x2, y2), box_color, 3)
                     cv2.putText(frame_with_boxes, f"{TARGET_COLOR} clothing",

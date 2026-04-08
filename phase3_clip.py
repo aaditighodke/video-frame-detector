@@ -11,7 +11,7 @@ COLOR_RANGES = {
     "blue":   [((100,150,80),(130,255,255))],
     "green":  [((40,100,80),(85,255,255))],
     "yellow": [((20,150,150),(35,255,255))],
-    "white":  [((0,0,200),(180,30,255))],
+    "white":  [((0,0,160),(180,60,255))],
     "black":  [((0,0,0),(180,255,40))],
     "pink":   [((160,80,150),(180,255,255)), ((0,80,150),(10,255,255))],
     "orange": [((10,150,100),(20,255,255))],
@@ -26,9 +26,9 @@ VIDEO_PATH = input("Enter video filename (e.g. street.mp4): ")
 VIDEO_PATH = f"input/{VIDEO_PATH}"
 PROMPT     = input("Enter what to search (e.g. woman with yellow bag): ").strip()
 COLOR      = input(f"Enter the colour of the object {list(COLOR_RANGES.keys())} (or press Enter to skip): ").strip().lower()
-FRAME_SKIP = 15
+FRAME_SKIP = 3
 OUTPUT_DIR = f"output/phase3_frames"
-THRESHOLD  = 0.20
+THRESHOLD  = 0.10
 # ────────────────────────────────────────────────────
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -71,7 +71,7 @@ def check_colour(crop, colour):
         mask  |= cv2.inRange(hsv, lo, hi)
     colour_pixels = cv2.countNonZero(mask)
     total_pixels  = hsv.shape[0] * hsv.shape[1]
-    return total_pixels > 0 and (colour_pixels / total_pixels) > 0.08
+    return total_pixels > 0 and (colour_pixels / total_pixels) > 0.03
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -79,7 +79,7 @@ while cap.isOpened():
         break
 
     if frame_num % FRAME_SKIP == 0:
-        results          = model(frame, classes=[0], verbose=False)
+        results = model(frame, classes=[0, 2, 3, 5, 7], verbose=False)
         frame_with_boxes = frame.copy()
         box_drawn        = False
 
